@@ -28,7 +28,7 @@ def callback(request):
             if isinstance(event, MessageEvent):
                 msg = event.message.text
                 if is_num(msg):
-                    float(msg) = msg*2			
+                    msg = float(msg)*2			
 
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(text=msg))
 
