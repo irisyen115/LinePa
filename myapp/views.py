@@ -26,10 +26,23 @@ def callback(request):
 
         for event in events:
             if isinstance(event, MessageEvent):
-                line_bot_api.reply_message(event.reply_token, TextSendMessage(text=event.message.text))
+                msg = event.message.text
+                if is_num(msg):
+                    msg = msg*2			
+
+                line_bot_api.reply_message(event.reply_token, TextSendMessage(text=msg))
 
         return HttpResponse()
 
     else:
         return HttpResponseBadRequest("Avengers assemble")
 
+def is_num(n):
+  is_number = True
+  try:
+    num = float(n)
+    # 檢查 "nan" 
+    is_number = num == num  # 或者使用 `math.isnan(num)`
+  except ValueError:
+    is_number = False
+  return is_number
