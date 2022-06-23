@@ -23,9 +23,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-nv0@8c7_@t=uovp-et@kr#)7!y9#+z@rq@dazr+ir(u=m^070s'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+LINE_CHANNEL_SECRET = '5c25933831d17fb9e0b759829e201610'
+LINE_CHANNEL_ACCESS_TOKEN = 'CsTp7IDXD2GrFCvNNJD3pQxP4ZasywBWOfSCruWXYM4Y/gnzN4cp3T2+5xhy7W0hdzew8BInpcUSr3y1DQTXd+piARKxg96v6YbguRPO9GZujsuSPS8V6bBm1Zn3EBlHYpigXr0CW4C7dWPnFYSWWgdB04t89/1O/w1cDnyilFU='
 
 ALLOWED_HOSTS = []
 
