@@ -1,3 +1,4 @@
+from os import getcwd
 from django.shortcuts import render
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden
@@ -13,11 +14,10 @@ parser = WebhookParser(settings.LINE_CHANNEL_SECRET)
 
 @csrf_exempt
 def callback(request):
-
+    reply = "無法辨識"
     if request.method == 'POST':
         signature = request.META['HTTP_X_LINE_SIGNATURE']
         body = request.body.decode('utf-8')
-
         try:
             events = parser.parse(body, signature)
         except InvalidSignatureError:
@@ -28,13 +28,16 @@ def callback(request):
         for event in events:
             if isinstance(event, MessageEvent):
                 msg = event.message.text
+
+                
                 if "兩隻老虎" in msg:
-                    with open('song.txt') as f:
+                    with open(getcwd() + '/staticfiles/song.txt') as f:
                         for line in f:
-                            f.read(2)
+                            song = line.split("-")
+                            if msg in song[0]:
+                                reply = song[1]
 
-
-                line_bot_api.reply_message(event.reply_token, TextSendMessage(text=msg))
+                line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply))
 
         return HttpResponse()
 
