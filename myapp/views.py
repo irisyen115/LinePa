@@ -1,3 +1,4 @@
+import logging
 from os import getcwd
 from django.shortcuts import render
 from django.conf import settings
@@ -32,7 +33,9 @@ def callback(request):
                 with open(getcwd() + '/staticfiles/song.txt') as f:
                     for line in f:
                         song = line.split("-")
-                        if msg is song[0]:
+                        logging.error(song[0])
+                        logging.error(msg)
+                        if msg == song[0]:
                             reply = song[1][:-1]
 
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply))
