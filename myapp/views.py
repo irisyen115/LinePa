@@ -32,7 +32,7 @@ def callback(request):
                 with open(getcwd() + '/staticfiles/song.txt') as f:
                     for line in f:
                         song = line.split("-")
-                        if msg in song[0]:
+                        if msg is song[0]:
                             reply = song[1][:-1]
 
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply))
