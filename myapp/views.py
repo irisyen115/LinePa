@@ -13,6 +13,11 @@ parser = WebhookParser(settings.LINE_CHANNEL_SECRET)
 
 @csrf_exempt
 def callback(request):
+    f = open('song.txt','w')
+    s = "兩隻老虎-54088"
+    f.write(str(s.split("-")))
+    
+
     if request.method == 'POST':
         signature = request.META['HTTP_X_LINE_SIGNATURE']
         body = request.body.decode('utf-8')
@@ -31,6 +36,9 @@ def callback(request):
                     msg = float(msg)*2			
                 elif "xd" in msg:
                     msg = "笑什麼笑"
+                elif "兩隻老虎" in msg:
+                    msg = f.read()
+                    f.close
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(text=msg))
 
         return HttpResponse()
@@ -47,3 +55,4 @@ def is_num(n):
   except ValueError:
     is_number = False
   return is_number
+
