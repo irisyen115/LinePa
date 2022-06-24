@@ -38,7 +38,6 @@ def callback(request):
                     msg = "笑什麼笑"
                 elif "兩隻老虎" in msg:
                     msg = "54088"
-                    f.close
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(text=msg))
 
         return HttpResponse()
