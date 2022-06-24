@@ -28,12 +28,11 @@ def callback(request):
         for event in events:
             if isinstance(event, MessageEvent):
                 msg = event.message.text
-                if is_num(msg):
-                    msg = float(msg)*2			
-                elif "xd" in msg:
-                    msg = "笑什麼笑"
-                elif "兩隻老虎" in msg:
-                    msg = "55688"
+                if "兩隻老虎" in msg:
+                    with open('song.txt') as f:
+                        for line in f:
+                            f.read(2)
+
 
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(text=msg))
 
