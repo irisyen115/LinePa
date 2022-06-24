@@ -29,7 +29,8 @@ def callback(request):
                 msg = event.message.text
                 if is_num(msg):
                     msg = float(msg)*2			
-
+                elif "xd" in msg:
+                    msg = "笑什麼笑"
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(text=msg))
 
         return HttpResponse()
