@@ -77,11 +77,14 @@ WSGI_APPLICATION = 'PaAss.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'd9g0f5pcesu1qf', 
+        'USER': 'lxuzoryprtkksc', 
+        'PASSWORD': '20a62c8cff701bea4edddba1340d5cbc0ae007703d099a7b54961fcd784b7974',
+        'HOST': 'ec2-52-72-56-59.compute-1.amazonaws.com', 
+        'PORT': '5432',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
