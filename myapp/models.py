@@ -1,7 +1,7 @@
 from django.db import models
 
 # Create your models here.
-class Music(models.Model):
+class Song(models.Model):
     song_name = models.TextField(default="song")
     song_num = models.TextField(default="32410")
     updated_at = models.DateTimeField(auto_now=True)

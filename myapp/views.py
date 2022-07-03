@@ -7,6 +7,9 @@ from django.views.decorators.csrf import csrf_exempt
 from linebot import LineBotApi, WebhookParser
 from linebot.exceptions import InvalidSignatureError, LineBotApiError
 from linebot.models import MessageEvent, TextSendMessage
+from myapp.models import Song
+import logging
+logger = logging.getLogger('django.server')
 
 
 # Create your views here.
@@ -29,14 +32,16 @@ def callback(request):
         for event in events:
             if isinstance(event, MessageEvent):
                 msg = event.message.text
-
-                with open(getcwd() + '/staticfiles/song.txt') as f:
-                    for line in f:
-                        song = line.split("-")
-                        logging.error(song[0])
-                        logging.error(msg)
-                        if msg == song[0]:
-                            reply = song[1][:-1]
+                try:
+                    records = Song.objects.filter(song_name=msg)
+                    data=Song.objects.all()
+                    logger.error(data.count())
+                    if 0 < records.count():
+                        reply=records[0].song_num
+                    else:
+                        reply = "我大意了沒有閃"
+                except Exception as e:
+                    logger.error(e)
 
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply))
 
