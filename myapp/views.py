@@ -34,8 +34,6 @@ def callback(request):
                 msg = event.message.text
                 try:
                     records = Song.objects.filter(song_name=msg)
-                    data=Song.objects.all()
-                    logger.error(data.count())
                     if 0 < records.count():
                         reply=records[0].song_num
                     else:
@@ -46,17 +44,19 @@ def callback(request):
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply))
 
         return HttpResponse()
-
     else:
         return HttpResponseBadRequest("Avengers assemble")
 
-def is_num(n):
-  is_number = True
-  try:
-    num = float(n)
-    # 檢查 "nan" 
-    is_number = num == num  # 或者使用 `math.isnan(num)`
-  except ValueError:
-    is_number = False
-  return is_number
+@csrf_exempt
+def song_page(request):
+    return render(request, 'songpage.html')
+# def is_num(n):
+#   is_number = True
+#   try:
+#     num = float(n)
+#     # 檢查 "nan" 
+#     is_number = num == num  # 或者使用 `math.isnan(num)`
+#   except ValueError:
+#     is_number = False
+#   return is_number
 

@@ -78,10 +78,10 @@ WSGI_APPLICATION = 'PaAss.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'd9g0f5pcesu1qf', 
-        'USER': 'lxuzoryprtkksc', 
+        'NAME': 'd9g0f5pcesu1qf',
+        'USER': 'lxuzoryprtkksc',
         'PASSWORD': '20a62c8cff701bea4edddba1340d5cbc0ae007703d099a7b54961fcd784b7974',
-        'HOST': 'ec2-52-72-56-59.compute-1.amazonaws.com', 
+        'HOST': 'ec2-52-72-56-59.compute-1.amazonaws.com',
         'PORT': '5432',
     }
 }
