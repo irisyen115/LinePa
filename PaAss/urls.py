@@ -20,5 +20,6 @@ from myapp import views # Add this line
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('callback', views.callback),
-    path('song_page', views.song_page)
+    path('song_page', views.song_page),
+    path('create',views.create)
 ]

@@ -8,18 +8,23 @@
             .cen {
                 text-align: center;
                 font-size: 20px;
+                margin-top: 10px;
+                padding-top: 10px;
             }
         </style>
     </head>
     <body>
-        <div class="container">
-            <div class="row">
-                <label for="song_name" class="cen">輸入歌名:</label>
-                <input type="text" id="song_name" name="song_name" class="col-12">
-                <label for="song_num" class="cen">輸入歌號:</label>
-                <input type="text" id="song_num" name="song_num" class="col-12">
-                <button type="button">加入</button>
+        <form action="create" method="post">
+            <div class="container cen">
+                <div class="row">
+                    {% csrf_token %}
+                    <label for="song_name" style="padding: 10px;">輸入歌名:</label>
+                    <input type="text" id="song_name" name="song_name" class="col-12">
+                    <label for="song_num" style="padding: 10px;">輸入歌號:</label>
+                    <input type="text" id="song_num" name="song_num" class="col-12">
+                    <input type="submit" style="margin-top: 20px;" value="加入">    
+                </div>
             </div>
-        </div>
+        </form>
     </body>
 </html>

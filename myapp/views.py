@@ -50,13 +50,12 @@ def callback(request):
 @csrf_exempt
 def song_page(request):
     return render(request, 'songpage.html')
-# def is_num(n):
-#   is_number = True
-#   try:
-#     num = float(n)
-#     # 檢查 "nan" 
-#     is_number = num == num  # 或者使用 `math.isnan(num)`
-#   except ValueError:
-#     is_number = False
-#   return is_number
+
+@csrf_exempt
+def create(request):
+    if request.method == 'POST':
+        songname= request.POST["song_name"]
+        songnum = request.POST["song_num"]
+    Song.objects.create(song_name = songname,song_num = songnum)
+    return HttpResponseBadRequest("Avengers assemble") 
 
