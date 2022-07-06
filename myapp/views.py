@@ -1,6 +1,7 @@
 import logging
 from os import getcwd
 from django.shortcuts import render
+from datetime import datetime
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden
 from django.views.decorators.csrf import csrf_exempt
@@ -57,5 +58,23 @@ def create(request):
         songname= request.POST["song_name"]
         songnum = request.POST["song_num"]
     Song.objects.create(song_name = songname,song_num = songnum)
-    return HttpResponseBadRequest("Avengers assemble") 
+    return render(request, 'create_success.html',{
+        'current_time': str(datetime.now()),
+        'song_name': songname,
+        'song_num': songnum 
+    })
+@csrf_exempt
+def create_success(request):
+    return render(request, 'create_success.html',{
+        'current_time': str(datetime.now()),
+        'song_name': ([x.song_name for x in Song.objects.all()]),
+        'song_num': ([y.song_num for y in Song.objects.all()])
+    }) 
 
+@csrf_exempt
+def create_fail(request):
+    return render(request, 'create_fail.html',{
+        'current_time': str(datetime.now()),
+        'song_name': ([x.song_name for x in Song.objects.all()]),
+        'song_num': ([y.song_num for y in Song.objects.all()])
+    }) 

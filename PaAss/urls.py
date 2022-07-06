@@ -21,5 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('callback', views.callback),
     path('song_page', views.song_page),
-    path('create',views.create)
+    path('create',views.create),
+    path('create_success',views.create_success),
+    path('create_fail',views.create_fail)
 ]
