@@ -57,12 +57,27 @@ def create(request):
     if request.method == 'POST':
         songname= request.POST["song_name"]
         songnum = request.POST["song_num"]
-    Song.objects.create(song_name = songname,song_num = songnum)
+    records = Song.objects.filter(song_name=songname)
+    if records.count() > 0:
+        reason = "歌名已儲存"
+        return render(request, 'create_fail.html',{
+        'current_time': str(datetime.now()),
+        'song_name': songname,
+        'song_num': songnum,
+        'reason':reason
+    })
     if songnum.isdigit():
+        Song.objects.create(song_name = songname,song_num = songnum)
         return render(request, 'create_success.html',{
         'current_time': str(datetime.now()),
         'song_name': songname,
         'song_num': songnum   
     })
     else:
-        return render(request, 'create_fail.html')
+        reason = "無法辨識歌號"
+        return render(request, 'create_fail.html',{
+        'current_time': str(datetime.now()),
+        'song_name': songname,
+        'song_num': songnum,
+        'reason': reason
+    })
