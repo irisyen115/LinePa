@@ -66,18 +66,21 @@ def create(request):
         'song_num': songnum,
         'reason':reason
     })
-    if songnum.isdigit():
-        Song.objects.create(song_name = songname,song_num = songnum)
-        return render(request, 'create_success.html',{
-        'current_time': str(datetime.now()),
-        'song_name': songname,
-        'song_num': songnum   
-    })
-    else:
+    if songnum.isdigit() == False:
         reason = "無法辨識歌號"
         return render(request, 'create_fail.html',{
         'current_time': str(datetime.now()),
         'song_name': songname,
         'song_num': songnum,
-        'reason': reason
+        'reason': reason   
     })
+    else:
+        Song.objects.create(song_name = songname,song_num = songnum)
+        return render(request, 'create_success.html',{
+        'current_time': str(datetime.now()),
+        'song_name': songname,
+        'song_num': songnum
+    })
+@csrf_exempt
+def song_list(request):
+    return render(request, 'songlist.html')

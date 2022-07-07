@@ -22,4 +22,5 @@ urlpatterns = [
     path('callback', views.callback),
     path('song_page', views.song_page),
     path('create',views.create),
+    path('song_list',views.song_list)
 ]
