@@ -2,6 +2,7 @@ import logging
 from os import getcwd
 from django.shortcuts import render
 from datetime import datetime
+from .models import Song
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden
 from django.views.decorators.csrf import csrf_exempt
@@ -66,7 +67,7 @@ def create(request):
         'song_num': songnum,
         'reason':reason
     })
-    if songnum.isdigit() == False:
+    elif songnum.isdigit() == False:
         reason = "無法辨識歌號"
         return render(request, 'create_fail.html',{
         'current_time': str(datetime.now()),
@@ -83,4 +84,11 @@ def create(request):
     })
 @csrf_exempt
 def song_list(request):
-    return render(request, 'songlist.html')
+    Song_list = Song.objects.all()
+    return render(request, 'Songlist.html', {
+        'Song_list': Song_list,
+        'Song.title': Song.title,
+        'Song.name':(x.song_name for x in Song.objects.all()),
+        'Song.num':(y.song_num for y in Song.objects.all())
+    })
+

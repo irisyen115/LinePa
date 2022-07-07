@@ -16,6 +16,7 @@
         </style>
     </head>
     <body>
+        {% for Song in Song_list %}
         <table>
             <th>
                 <tr>
@@ -25,6 +26,12 @@
                     <td>id</td>
                 </tr>
             </th>
+        {{ Song.title }}
+        {{ Song.name }}
+        {{ Song.num }}
+        </table>
+        {% endfor %}
+        <!-- <table>
             <tr>
                 <td>1</td>
                 <td>兩隻老虎</td>
@@ -37,6 +44,6 @@
                 <td>54321</td>
                 <td>2</td>
             </tr>
-        </table>
+        </table> -->
     </body>
 </html>
