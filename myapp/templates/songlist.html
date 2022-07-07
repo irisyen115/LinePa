@@ -16,34 +16,17 @@
         </style>
     </head>
     <body>
-        {% for Song in Song_list %}
         <table>
             <th>
+                {% for song in song_list %}
                 <tr>
-                    <td>id</td>
-                    <td>歌號</td>
-                    <td>歌名</td>
-                    <td>id</td>
+                    <td>{{ song.id }}</td>
+                    <td>{{ song.song_name }}</td>
+                    <td>{{ song.song_num }}</td>
+                    <td>{{ song.id }}</td>
                 </tr>
+                {% endfor %}
             </th>
-        {{ Song.title }}
-        {{ Song.name }}
-        {{ Song.num }}
         </table>
-        {% endfor %}
-        <!-- <table>
-            <tr>
-                <td>1</td>
-                <td>兩隻老虎</td>
-                <td>55688</td>
-                <td>1</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>傷心酒店</td>
-                <td>54321</td>
-                <td>2</td>
-            </tr>
-        </table> -->
     </body>
 </html>

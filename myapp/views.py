@@ -84,11 +84,10 @@ def create(request):
     })
 @csrf_exempt
 def song_list(request):
-    Song_list = Song.objects.all()
-    return render(request, 'Songlist.html', {
-        'Song_list': Song_list,
-        'Song.title': Song.title,
-        'Song.name':(x.song_name for x in Song.objects.all()),
-        'Song.num':(y.song_num for y in Song.objects.all())
+    song_list = Song.objects.all()
+    return render(request, 'songlist.html', {
+        'song_list': song_list,
+        'song.song_name':(x.song_name for x in song_list),
+        'song.song_num':(y.song_num for y in song_list)
     })
 
