@@ -90,4 +90,6 @@ def song_list(request):
         'song.song_name':(x.song_name for x in song_list),
         'song.song_num':(y.song_num for y in song_list)
     })
-
+@csrf_exempt
+def delete(request):
+    song_id = request.POST["song_id"]

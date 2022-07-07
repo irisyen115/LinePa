@@ -18,15 +18,19 @@
     <body>
         <table>
             <th>
-                {% for song in song_list %}
-                <tr>
-                    <td>{{ song.id }}</td>
-                    <td>{{ song.song_name }}</td>
-                    <td>{{ song.song_num }}</td>
-                    <td>{{ song.id }}</td>
-                </tr>
-                {% endfor %}
+                <td>id</td>
+                <td>歌名</td>
+                <td>歌號</td>
+                <td>id</td>
             </th>
+        {% for song in song_list %}
+            <tr>
+                <form action="delete"><td>{{ song.id }}</td></form>
+                <td>{{ song.song_name }}</td>
+                <td>{{ song.song_num }}</td>
+                <td>{{ song.id }}</td>
+            </tr>
+            {% endfor %}
         </table>
     </body>
 </html>
