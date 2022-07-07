@@ -92,4 +92,6 @@ def song_list(request):
     })
 @csrf_exempt
 def delete(request):
-    song_id = request.POST["song_id"]
+    # song_id = request.POST["song_id"]
+    data = Song.objects.filter(id = 4)
+    data.delete()
