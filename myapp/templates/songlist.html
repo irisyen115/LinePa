@@ -15,18 +15,34 @@
             }
         </style>
         <script>
-            function show(a, b, c) {
-                alert(a.innerText);
+            function show(a) {
+                // alert(a.innerText);
+                const uri = 'delete';
+                fetch(uri, {
+                method:'POST',
+                body:JSON.stringify({
+                    id : 10 
+                }),
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8'
+                }
+                })
+                .then(res => {
+                    return res.json();   
+                }).then(result => {
+                    alert(result); 
+                });
             }
         </script>
     </head>
     <body>
         <table>
-            <th>
-                <td>歌名</td>
-                <td>歌號</td>
-                <td>id</td>
-            </th>
+            <tr>
+                <th>id</th>
+                <th>歌名</th>
+                <th>歌號</th>
+                <th>id</th>
+            </tr>
         {% for song in song_list %}
             <tr>
                 <td>{{ song.id }}</td>

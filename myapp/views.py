@@ -11,6 +11,7 @@ from linebot.exceptions import InvalidSignatureError, LineBotApiError
 from linebot.models import MessageEvent, TextSendMessage
 from myapp.models import Song
 import logging
+import json
 logger = logging.getLogger('django.server')
 
 
@@ -92,6 +93,16 @@ def song_list(request):
     })
 @csrf_exempt
 def delete(request):
-    # song_id = request.POST["song_id"]
-    data = Song.objects.filter(id = 4)
-    data.delete()
+    logger.error("I am here")
+    body_unicode = request.body.decode('utf-8')
+    logger.error(body_unicode)
+    try:
+        data = json.loads(request.body.decode('utf-8'))
+        songid = data['id']
+        # if request.method == 'POST':
+        #     songid= request.POST["id"]
+        data_2 = Song.objects.filter(id = songid)
+        data_2.delete()
+    except Exception as e:
+        logger.error(str(e))
+    logger.error(data)
