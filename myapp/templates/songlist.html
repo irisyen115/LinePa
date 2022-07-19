@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <style>
+            html,body { height: 100%; margin: 0; }
             table tr td{
                 border: solid 2px;
                 text-align: center;
@@ -10,45 +11,95 @@
             }
             table{
                 border-collapse: collapse;
-                margin-left: 20%;
+                margin-left: 30%;
                 font-size: 40px;
             }
+            #songid {
+                cursor: pointer;
+                background-color: red;
+            }     
+            #loading { 
+                position: absolute; z-index: 9999;
+                top: 0; left: 0;
+                width: 100%;
+                height: 100%;
+                display: none;
+                align-items: center;
+            }       
+            #loading #mask {
+                position:  absolute;
+                width: 100%; 
+                height: 100%;
+                background-color: #444;
+                opacity: 0.1;
+            }            
+            #loading #animation {
+                width: 64px; height: 64px;
+                margin: auto;
+                border: solid rgb(17 114 17 , 0.5);
+                border-left: 0;
+                border-right: 0;
+                border-radius: 50%;
+                box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+                animation: rotation 2s infinite linear;
+                background-color: transparent;
+            }
+            @keyframes rotation {
+                from {
+                    transform: rotate(0deg);
+                }
+                to {
+                    transform: rotate(359deg);
+                }
+            }            
         </style>
         <script>
+            function mask() {
+                document.getElementById("loading").style.display = "flex";
+            };
+
+            function unmask() {
+                document.getElementById("loading").style.display = "none";
+            }
             function show(a) {
-                // alert(a.innerText);
                 const uri = 'delete';
+                mask();
                 fetch(uri, {
-                method:'POST',
-                body:JSON.stringify({
-                    id : 10 
-                }),
-                headers: {
-                    'Content-Type': 'application/json; charset=utf-8'
-                }
+                    method:'POST',
+                    body:JSON.stringify({
+                        id : a.innerText 
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json; charset=utf-8'
+                    }
                 })
-                .then(res => {
-                    return res.json();   
-                }).then(result => {
-                    alert(result); 
+                .then(result => {
+                    const element = document.getElementById("tr"+a.innerText);
+                    element.remove(); 
+                })
+                .finally(() => {
+                    setTimeout(unmask, 2000);
+                    unmask();
                 });
             }
         </script>
     </head>
     <body>
+        <div id="loading">
+            <div id="mask"></div>
+            <div id="animation"></div>
+        </div>
         <table>
             <tr>
-                <th>id</th>
                 <th>歌名</th>
                 <th>歌號</th>
-                <th>id</th>
+                <th>刪除</th>
             </tr>
         {% for song in song_list %}
-            <tr>
-                <td>{{ song.id }}</td>
+            <tr id="tr{{ song.id }}">
                 <td>{{ song.song_name }}</td>
                 <td>{{ song.song_num }}</td>
-                <td onclick="show(this)">{{ song.id }}</td>
+                <td id="songid" onclick="show(this)">{{ song.id }}</td>
             </tr>
             {% endfor %}
         </table>

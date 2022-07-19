@@ -10,6 +10,7 @@ from linebot import LineBotApi, WebhookParser
 from linebot.exceptions import InvalidSignatureError, LineBotApiError
 from linebot.models import MessageEvent, TextSendMessage
 from myapp.models import Song
+from django.http import JsonResponse
 import logging
 import json
 logger = logging.getLogger('django.server')
@@ -56,33 +57,18 @@ def song_page(request):
 
 @csrf_exempt
 def create(request):
-    if request.method == 'POST':
-        songname= request.POST["song_name"]
-        songnum = request.POST["song_num"]
+    logger.error("Hello")
+    data = json.loads(request.body.decode('utf-8'))
+    songname = data['songname']
+    songnum = data['songnum']
     records = Song.objects.filter(song_name=songname)
     if records.count() > 0:
-        reason = "歌名已儲存"
-        return render(request, 'create_fail.html',{
-        'current_time': str(datetime.now()),
-        'song_name': songname,
-        'song_num': songnum,
-        'reason':reason
-    })
+        return HttpResponse(status=500)        
     elif songnum.isdigit() == False:
-        reason = "無法辨識歌號"
-        return render(request, 'create_fail.html',{
-        'current_time': str(datetime.now()),
-        'song_name': songname,
-        'song_num': songnum,
-        'reason': reason   
-    })
+        return HttpResponse(status=500)
     else:
         Song.objects.create(song_name = songname,song_num = songnum)
-        return render(request, 'create_success.html',{
-        'current_time': str(datetime.now()),
-        'song_name': songname,
-        'song_num': songnum
-    })
+        return HttpResponse(status=200)        
 @csrf_exempt
 def song_list(request):
     song_list = Song.objects.all()
@@ -93,16 +79,8 @@ def song_list(request):
     })
 @csrf_exempt
 def delete(request):
-    logger.error("I am here")
-    body_unicode = request.body.decode('utf-8')
-    logger.error(body_unicode)
-    try:
-        data = json.loads(request.body.decode('utf-8'))
-        songid = data['id']
-        # if request.method == 'POST':
-        #     songid= request.POST["id"]
-        data_2 = Song.objects.filter(id = songid)
-        data_2.delete()
-    except Exception as e:
-        logger.error(str(e))
-    logger.error(data)
+    data = json.loads(request.body.decode('utf-8'))
+    songid = data['id']
+    data_2 = Song.objects.filter(id = songid)
+    data_2.delete()
+    return HttpResponse()
