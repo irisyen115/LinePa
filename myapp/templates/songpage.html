@@ -81,7 +81,9 @@
                 .then(result => {
                     if(result.status == 200) {
                         document.getElementById("success").style.display = "block"; 
-                    } 
+                    } else {
+                        document.getElementById("fail").style.display = "block";
+                    }
                 }).catch(() => {
                     document.getElementById("fail").style.display = "block";
                 })
