@@ -18,4 +18,3 @@ function mask() {
 function unmask() {
     document.getElementById("loading").style.display = "none";
 }
-init();

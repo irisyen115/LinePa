@@ -23,8 +23,15 @@
         }    
     </style>
     <script>
+            function success_disappear() {
+                document.getElementById("success").style.display = "none";
+            }
+            function fail_disappear() {
+                document.getElementById("fail").style.display = "none";
+            }
             function show() {
                 const parent = document.getElementById("loading_area");
+                parent.appendChild(load());
                 const uri = 'create';
                 const name = document.getElementById("song_name");
                 const num = document.getElementById("song_num");
@@ -42,8 +49,10 @@
                 .then(result => {
                     if(result.status == 200) {
                         document.getElementById("success").style.display = "block"; 
+                        setTimeout(success_disappear, 2000);
                     } else {
                         document.getElementById("fail").style.display = "block";
+                        setTimeout(fail_disappear, 2000);
                     }
                 }).catch(() => {
                     document.getElementById("fail").style.display = "block";
@@ -54,8 +63,8 @@
                     name.value = "";
                     num.value = "";
                 });
-                parent.appendChild(load());
-            }                                                      
+                
+            }                                                                 
     </script>
 </head>
 
