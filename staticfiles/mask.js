@@ -18,3 +18,7 @@ function mask() {
 function unmask() {
     document.getElementById("loading").style.display = "none";
 }
+window.onload = function () {
+    const parent = document.body;              
+    parent.appendChild(load());    
+}

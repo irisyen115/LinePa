@@ -30,8 +30,6 @@
                 document.getElementById("fail").style.display = "none";
             }
             function show() {
-                const parent = document.getElementById("loading_area");
-                parent.appendChild(load());
                 const uri = 'create';
                 const name = document.getElementById("song_name");
                 const num = document.getElementById("song_num");
@@ -67,9 +65,7 @@
             }                                                                 
     </script>
 </head>
-
 <body>
-    <div id="loading_area"></div>
     <div class="cen">
         {% csrf_token %}
         <label for="song_name" style="padding: 10px;">輸入歌名:</label>

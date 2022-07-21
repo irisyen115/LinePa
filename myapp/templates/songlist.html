@@ -2,6 +2,8 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <link rel="stylesheet" href="static/mask.css">
+        <script src="static/mask.js"></script> 
         <style>
             html,body { height: 100%; margin: 0; }
             table tr td{
@@ -17,47 +19,11 @@
             #songid {
                 cursor: pointer;
                 background-color: red;
-            }     
-            #loading { 
-                position: absolute; z-index: 9999;
-                top: 0; left: 0;
-                width: 100%;
-                height: 100%;
-                display: none;
-                align-items: center;
-            }       
-            #loading #mask {
-                position:  absolute;
-                width: 100%; 
-                height: 100%;
-                background-color: #444;
-                opacity: 0.1;
-            }            
-            #loading #animation {
-                width: 64px; height: 64px;
-                margin: auto;
-                border: solid rgb(17 114 17 , 0.5);
-                border-left: 0;
-                border-right: 0;
-                border-radius: 50%;
-                box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-                animation: rotation 2s infinite linear;
-                background-color: transparent;
-            }
-            @keyframes rotation {
-                from {
-                    transform: rotate(0deg);
-                }
-                to {
-                    transform: rotate(359deg);
-                }
-            }            
+            }                         
         </style>
         <script>            
             function show(a) {
                 const uri = 'delete';
-                const parent = document.getElementById("loading_area");
-                parent.appendChild(load());
                 mask();
                 fetch(uri, {
                     method:'POST',
@@ -80,10 +46,6 @@
         </script>
     </head>
     <body>
-        <div id="loading">
-            <div id="mask"></div>
-            <div id="animation"></div>
-        </div>
         <table>
             <tr>
                 <th>歌名</th>
