@@ -41,7 +41,7 @@ def callback(request):
                     if 0 < records.count():
                         reply=records[0].song_num
                     else:
-                        reply = "我大意了沒有閃"
+                        reply = "查無此歌"
                 except Exception as e:
                     logger.error(e)
 
