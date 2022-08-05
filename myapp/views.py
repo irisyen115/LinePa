@@ -8,7 +8,7 @@ from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbid
 from django.views.decorators.csrf import csrf_exempt
 from linebot import LineBotApi, WebhookParser
 from linebot.exceptions import InvalidSignatureError, LineBotApiError
-from linebot.models import MessageEvent, TextSendMessage
+from linebot.models import MessageEvent, TextSendMessage, StickerSendMessage
 from myapp.models import Song
 from django.http import JsonResponse
 import logging
@@ -39,13 +39,13 @@ def callback(request):
                 try:
                     records = Song.objects.filter(song_name=msg)
                     if 0 < records.count():
-                        reply=records[0].song_num
+                        reply = TextSendMessage(text=records[0].song_num)
                     else:
                         reply = StickerSendMessage(package_id=11538,sticker_id=51626497);
                 except Exception as e:
                     logger.error(e)
 
-                line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply))
+                line_bot_api.reply_message(event.reply_token, reply)
 
         return HttpResponse()
     else:
