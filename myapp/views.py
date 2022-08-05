@@ -41,7 +41,7 @@ def callback(request):
                     if 0 < records.count():
                         reply=records[0].song_num
                     else:
-                        reply = "查無此歌"
+                        reply = StickerSendMessage(package_id=11538,sticker_id=51626497);
                 except Exception as e:
                     logger.error(e)
 
