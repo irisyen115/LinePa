@@ -8,7 +8,7 @@ from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbid
 from django.views.decorators.csrf import csrf_exempt
 from linebot import LineBotApi, WebhookParser
 from linebot.exceptions import InvalidSignatureError, LineBotApiError
-from linebot.models import MessageEvent, TextSendMessage, StickerSendMessage
+from linebot.models import MessageEvent, TextSendMessage, StickerSendMessage, FlexSendMessage
 from myapp.models import Song
 from django.http import JsonResponse
 import logging
@@ -39,7 +39,7 @@ def callback(request):
                 try:
                     records = Song.objects.filter(song_name=msg)
                     if 0 < records.count():
-                        reply = TextSendMessage(text=records[0].song_num)
+                        reply = flex_message(records)
                     else:
                         reply = StickerSendMessage(package_id=11538,sticker_id=51626497);
                 except Exception as e:
@@ -50,7 +50,37 @@ def callback(request):
         return HttpResponse()
     else:
         return HttpResponseBadRequest("Avengers assemble")
-
+def flex_message(records):    
+    x = records[0]
+    content_json={
+    "type": "bubble",
+    "header": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+        {
+            "type": "text",
+            "text": x.song_name,
+            "margin": "lg",
+            "size": "lg",
+            "weight": "bold"
+        }
+        ]
+    },
+    "body": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+        {
+            "type": "text",
+            "weight": "bold",
+            "size": "5xl",
+            "text": x.song_num
+        }
+        ]
+    }
+    }
+    return FlexSendMessage(content=content_json)
 @csrf_exempt
 def song_page(request):
     return render(request, 'songpage.html')
