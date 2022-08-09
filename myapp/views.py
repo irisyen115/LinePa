@@ -57,7 +57,7 @@ def callback(request):
                 try:
                     line_bot_api.reply_message(event.reply_token, reply)
                 except Exception as e:
-                    logger.error(records_length)
+                    logger.error(len(records))
         return HttpResponse()
     else:
         return HttpResponseBadRequest("Avengers assemble")
