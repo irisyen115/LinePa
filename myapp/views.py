@@ -39,6 +39,7 @@ def callback(request):
                 msg = event.message.text
                 try:
                     records = Song.objects.filter(song_name__contains=msg)
+                    logger.error(records_length)
                     if 0 < records.count():
                         reply = flex_message(records)
                     else:
@@ -52,7 +53,7 @@ def callback(request):
         return HttpResponseBadRequest("Avengers assemble")
 
 def flex_message(records):
-    x = records
+    x = records[0]    
     logger.error(x)
     content_json={
     "type": "bubble",
