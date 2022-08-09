@@ -37,8 +37,10 @@ def callback(request):
             if isinstance(event, MessageEvent):
                 msg = event.message.text
                 try:
+                    logger.error("Hello")
                     records = Song.objects.filter(song_name__contains=msg)
                     if 0 < records.count():
+                        logger.error("Hello")
                         reply = flex_message(records)
                     else:
                         reply = StickerSendMessage(package_id=11538,sticker_id=51626497);
