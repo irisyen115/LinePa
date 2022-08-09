@@ -26,13 +26,18 @@ def callback(request):
     if request.method == 'POST':
         signature = request.META['HTTP_X_LINE_SIGNATURE']
         body = request.body.decode('utf-8')
+        logger.error("Hello")
         try:
             events = parser.parse(body, signature)
+            logger.error("Hello")
         except InvalidSignatureError:
             return HttpResponseForbidden()
+            logger.error("Hello")
         except LineBotApiError:
             return HttpResponseBadRequest()
+        
         logger.error("Hello")
+
         for event in events:
             logger.error("Hello")
             if isinstance(event, MessageEvent):
