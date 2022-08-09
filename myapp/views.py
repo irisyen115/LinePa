@@ -8,7 +8,7 @@ from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbid
 from django.views.decorators.csrf import csrf_exempt
 from linebot import LineBotApi, WebhookParser
 from linebot.exceptions import InvalidSignatureError, LineBotApiError
-from linebot.models import MessageEvent, TextSendMessage, StickerSendMessage, FlexSendMessage
+from linebot.models import MessageEvent, TextSendMessage, StickerSendMessage
 from myapp.models import Song
 from django.http import JsonResponse
 import logging
@@ -32,57 +32,25 @@ def callback(request):
             return HttpResponseForbidden()
         except LineBotApiError:
             return HttpResponseBadRequest()
+
         for event in events:
             if isinstance(event, MessageEvent):
                 msg = event.message.text
                 try:
                     records = Song.objects.get(headline__contains='好的')
                     if 0 < records.count():
-                        reply = flex_message(records)
+                        reply = TextSendMessage(text=records[0].song_num)
                     else:
                         reply = StickerSendMessage(package_id=11538,sticker_id=51626497);
                 except Exception as e:
                     logger.error(e)
-                try:
-                    line_bot_api.reply_message(event.reply_token, reply)
-                except Exception as e:
-                    logger.error("send message failed")
-                    logger.error(e)
+
+                line_bot_api.reply_message(event.reply_token, reply)
+
         return HttpResponse()
     else:
         return HttpResponseBadRequest("Avengers assemble")
-def flex_message(records):
-    x = records[0]
-    logger.error(x)
-    content_json={
-        "type": "bubble",
-        "header": {
-            "type": "box",
-            "layout": "vertical",
-            "contents": [
-            {
-                "type": "text",
-                "text": x.song_name,
-                "margin": "lg",
-                "size": "lg",
-                "weight": "bold"
-            }
-            ]
-        },
-        "body": {
-            "type": "box",
-            "layout": "vertical",
-            "contents": [
-            {
-                "type": "text",
-                "weight": "bold",
-                "size": "5xl",
-                "text": x.song_num
-            }
-            ]
-        }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
-    }
-    return FlexSendMessage(contents=content_json, alt_text=x.song_num)
+
 @csrf_exempt
 def song_page(request):
     return render(request, 'songpage.html')
