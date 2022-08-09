@@ -37,7 +37,7 @@ def callback(request):
             if isinstance(event, MessageEvent):
                 msg = event.message.text
                 try:
-                    records = Song.objects.filter(song_name=msg)
+                    records = Song.objects.get(headline__contains='好的')
                     if 0 < records.count():
                         reply = TextSendMessage(text=records[0].song_num)
                     else:
