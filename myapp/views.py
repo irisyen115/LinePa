@@ -50,7 +50,7 @@ def callback(request):
                 try:
                     line_bot_api.reply_message(event.reply_token, reply)
                 except Exception as e:
-                    logger.error(e)
+                    logger.error("Hello")
         return HttpResponse()
     else:
         return HttpResponseBadRequest("Avengers assemble")
