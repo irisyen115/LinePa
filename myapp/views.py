@@ -37,14 +37,16 @@ def callback(request):
             if isinstance(event, MessageEvent):
                 msg = event.message.text
                 try:
-                    records = Song.objects.get(headline__contains='好的')
+                    logger.error("Hello")
+                    records = Song.objects.filter(headline__contains='好的')
                     if 0 < records.count():
                         reply = TextSendMessage(text=records[0].song_num)
                     else:
                         reply = StickerSendMessage(package_id=11538,sticker_id=51626497);
                 except Exception as e:
                     logger.error(e)
-
+                    
+                logger.error("Hello")
                 line_bot_api.reply_message(event.reply_token, reply)
 
         return HttpResponse()
