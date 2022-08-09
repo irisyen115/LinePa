@@ -91,10 +91,9 @@ def flex_message(records):
                     "text": x.song_num
                 }
                 ]
-            }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+            }
         }
-        
-        return FlexSendMessage(contents=content_json, alt_text=x.song_num)
+    return FlexSendMessage(contents=content_json, alt_text=x.song_num)
 
 @csrf_exempt
 def song_page(request):
