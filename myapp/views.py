@@ -47,8 +47,10 @@ def callback(request):
                 except Exception as e:
                     logger.error(e)
 
-                line_bot_api.reply_message(event.reply_token, reply)
-
+                try:
+                    line_bot_api.reply_message(event.reply_token, reply)
+                except Exception as e:
+                    logger.error(e)
         return HttpResponse()
     else:
         return HttpResponseBadRequest("Avengers assemble")
