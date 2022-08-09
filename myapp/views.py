@@ -8,7 +8,7 @@ from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbid
 from django.views.decorators.csrf import csrf_exempt
 from linebot import LineBotApi, WebhookParser
 from linebot.exceptions import InvalidSignatureError, LineBotApiError
-from linebot.models import MessageEvent, TextSendMessage, StickerSendMessage
+from linebot.models import MessageEvent, TextSendMessage, StickerSendMessage, FlexSendMessage
 from myapp.models import Song
 from django.http import JsonResponse
 import logging
