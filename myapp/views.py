@@ -57,41 +57,7 @@ def callback(request):
     else:
         return HttpResponseBadRequest("Avengers assemble")
 
-# def flex_message(records):
-#     x = records[0]
-#     logger.error(x)
-#     content_json={
-#     "type": "bubble",
-#             "header": {
-#                 "type": "box",
-#                 "layout": "vertical",
-#                 "contents": [
-#                 {
-#                     "type": "text",
-#                     "text": x.song_name,
-#                     "margin": "lg",
-#                     "size": "lg",
-#                     "weight": "bold"
-#                 }
-#                 ]
-#             },
-#             "body": {
-#                 "type": "box",
-#                 "layout": "vertical",
-#                 "contents": [
-#                 {
-#                     "type": "text",
-#                     "weight": "bold",
-#                     "size": "5xl",
-#                     "text": x.song_num
-#                 }
-#                 ]
-#             }
-#         }
-#     return FlexSendMessage(contents=content_json, alt_text=x.song_num)
-
-@csrf_exempt
-def flex_message(request):
+def flex_message(records):
     bubbles = []
     for rec in records:
         bubble = make_bubble(rec)
@@ -101,11 +67,11 @@ def flex_message(request):
         "type": "carousel",
         "contents": bubbles
     }
+    return FlexSendMessage(contents=carousel, alt_text='xd')
 
-@csrf_exempt
+
 def make_bubble(rec):
-    content_json={
-    "type": "bubble",
+    return {"type": "bubble",
         "header": {
             "type": "box",
             "layout": "vertical",
@@ -132,8 +98,7 @@ def make_bubble(rec):
             ]
         }
     }    
-    return FlexSendMessage(contents=content_json, alt_text=rec.song_num)
-
+    
 
 @csrf_exempt
 def song_page(request):
