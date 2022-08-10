@@ -50,6 +50,7 @@ def callback(request):
                     line_bot_api.reply_message(event.reply_token, reply)
                 except Exception as e:
                     logger.error (records.count())
+                    logger.error ("line after records count")
 
         return HttpResponse()
     else:
