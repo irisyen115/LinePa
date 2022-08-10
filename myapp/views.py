@@ -57,38 +57,83 @@ def callback(request):
     else:
         return HttpResponseBadRequest("Avengers assemble")
 
-def flex_message(records):
-    x = records[0]
-    logger.error(x)
+# def flex_message(records):
+#     x = records[0]
+#     logger.error(x)
+#     content_json={
+#     "type": "bubble",
+#             "header": {
+#                 "type": "box",
+#                 "layout": "vertical",
+#                 "contents": [
+#                 {
+#                     "type": "text",
+#                     "text": x.song_name,
+#                     "margin": "lg",
+#                     "size": "lg",
+#                     "weight": "bold"
+#                 }
+#                 ]
+#             },
+#             "body": {
+#                 "type": "box",
+#                 "layout": "vertical",
+#                 "contents": [
+#                 {
+#                     "type": "text",
+#                     "weight": "bold",
+#                     "size": "5xl",
+#                     "text": x.song_num
+#                 }
+#                 ]
+#             }
+#         }
+#     return FlexSendMessage(contents=content_json, alt_text=x.song_num)
+
+@csrf_exempt
+def flex_message(request):
+    bubbles = []
+    for rec in records:
+        bubble = make_bubble(rec)
+        bubbles.append(bubble)
+
+    carousel = {
+        "type": "carousel",
+        "contents": bubbles
+    }
+
+@csrf_exempt
+def make_bubble(rec):
     content_json={
     "type": "bubble",
-            "header": {
-                "type": "box",
-                "layout": "vertical",
-                "contents": [
-                {
-                    "type": "text",
-                    "text": x.song_name,
-                    "margin": "lg",
-                    "size": "lg",
-                    "weight": "bold"
-                }
-                ]
-            },
-            "body": {
-                "type": "box",
-                "layout": "vertical",
-                "contents": [
-                {
-                    "type": "text",
-                    "weight": "bold",
-                    "size": "5xl",
-                    "text": x.song_num
-                }
-                ]
+        "header": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+            {
+                "type": "text",
+                "text": rec.song_name,
+                "margin": "lg",
+                "size": "lg",
+                "weight": "bold"
             }
+            ]
+        },
+        "body": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+            {
+                "type": "text",
+                "weight": "bold",
+                "size": "5xl",
+                "text": rec.song_num
+            }
+            ]
         }
-    return FlexSendMessage(contents=content_json, alt_text=x.song_num)
+    }    
+    return FlexSendMessage(contents=content_json, alt_text=rec.song_num)
+
 
 @csrf_exempt
 def song_page(request):
