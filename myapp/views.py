@@ -22,7 +22,7 @@ parser = WebhookParser(settings.LINE_CHANNEL_SECRET)
 
 @csrf_exempt
 def callback(request):
-    reply = "無法辨識"
+    reply = "無法辨識"    
     if request.method == 'POST':
         signature = request.META['HTTP_X_LINE_SIGNATURE']
         body = request.body.decode('utf-8')
@@ -38,6 +38,8 @@ def callback(request):
                 msg = event.message.text
                 try:
                     records = Song.objects.filter(song_name__contains=msg)
+                    logger.error (records.count())
+                    logger.error ("line after records count")
                     if 0 < records.count():
                         reply = flex_message(records)
                     else:
