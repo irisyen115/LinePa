@@ -23,31 +23,23 @@ parser = WebhookParser(settings.LINE_CHANNEL_SECRET)
 @csrf_exempt
 def callback(request):
     reply = "無法辨識"
-    logger.error("Hello")
     if request.method == 'POST':
         signature = request.META['HTTP_X_LINE_SIGNATURE']
         body = request.body.decode('utf-8')
-        logger.error("Hello")
         try:
             events = parser.parse(body, signature)
-            logger.error("Hello")
         except InvalidSignatureError:
             return HttpResponseForbidden()
-            logger.error("Hello")
         except LineBotApiError:
             return HttpResponseBadRequest()
         
-        logger.error("Hello")
 
         for event in events:
-            logger.error("Hello")
             if isinstance(event, MessageEvent):
                 msg = event.message.text
                 try:
-                    logger.error("Hello")
                     records = Song.objects.filter(song_name__contains=msg)
                     if 0 < records.count():
-                        logger.error("Hello")
                         reply = flex_message(records)
                     else:
                         reply = StickerSendMessage(package_id=11538,sticker_id=51626497);
@@ -57,7 +49,8 @@ def callback(request):
                 try:
                     line_bot_api.reply_message(event.reply_token, reply)
                 except Exception as e:
-                    logger.error(len(records))
+                    logger.error (records.count())
+
         return HttpResponse()
     else:
         return HttpResponseBadRequest("Avengers assemble")
