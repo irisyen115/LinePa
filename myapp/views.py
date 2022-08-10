@@ -44,9 +44,11 @@ def callback(request):
                         reply = StickerSendMessage(package_id=11538,sticker_id=51626497);
                 except Exception as e:
                     logger.error(e + "cd")
-
+                try:
                     line_bot_api.reply_message(event.reply_token, reply)
-
+                except Exception as e:
+                    logger.error (records.count())
+                    logger.error ("line after records count")
                     
 
         return HttpResponse()
