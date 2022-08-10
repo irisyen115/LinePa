@@ -33,7 +33,9 @@ def callback(request):
         except LineBotApiError:
             return HttpResponseBadRequest()
         
-
+        logger.error (records.count())
+        logger.error ("line after records count")
+        
         for event in events:
             if isinstance(event, MessageEvent):
                 msg = event.message.text
@@ -48,8 +50,7 @@ def callback(request):
 
                     line_bot_api.reply_message(event.reply_token, reply)
 
-                    logger.error (records.count())
-                    logger.error ("line after records count")
+                    
 
         return HttpResponse()
     else:
