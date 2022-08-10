@@ -41,7 +41,7 @@ def callback(request):
                     logger.error (records.count())
                     logger.error ("line after records count")
                     if 0 < records.count():
-                        reply = flex_message(records)
+                        reply = flex_message(records,msg)
                     else:
                         reply = StickerSendMessage(package_id=11538,sticker_id=51626497);
                 except Exception as e:
@@ -57,7 +57,7 @@ def callback(request):
     else:
         return HttpResponseBadRequest("Avengers assemble")
 
-def flex_message(records):
+def flex_message(records,msg):
     bubbles = []
     for rec in records:
         bubble = make_bubble(rec)
@@ -67,7 +67,7 @@ def flex_message(records):
         "type": "carousel",
         "contents": bubbles
     }
-    return FlexSendMessage(contents=carousel, alt_text='xd')
+    return FlexSendMessage(contents=carousel, alt_text=msg)
 
 
 def make_bubble(rec):
