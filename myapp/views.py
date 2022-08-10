@@ -32,10 +32,7 @@ def callback(request):
             return HttpResponseForbidden()
         except LineBotApiError:
             return HttpResponseBadRequest()
-        
-        logger.error (records.count())
-        logger.error ("line after records count")
-        
+               
         for event in events:
             if isinstance(event, MessageEvent):
                 msg = event.message.text
