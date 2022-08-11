@@ -37,9 +37,7 @@ def callback(request):
             if isinstance(event, MessageEvent):
                 msg = event.message.text
                 try:
-                    records = Song.objects.filter(song_name__contains=msg)
-                    logger.error (records.count())
-                    logger.error ("line after records count")
+                    records = Song.objects.filter(song_name__contains=msg)                    
                     if 0 < records.count():
                         reply = flex_message(records,msg)
                     else:
