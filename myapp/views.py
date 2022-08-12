@@ -81,9 +81,9 @@ def limit_bubble(c,msg):
         "contents": [
         {
             "type": "text",
-            "text": "請再輸入更詳細歌名",
+            "text": "請再輸入更詳細的關鍵字",
             "margin": "lg",
-            "size": "lg",
+            "size": "xxl",
             "weight": "bold"
         }
         ]
@@ -98,7 +98,7 @@ def limit_bubble(c,msg):
             "contents": [
             {
                 "type": "span",
-                "text": "您的"
+                "text": "關鍵字"
             },
             {
                 "type": "span",
