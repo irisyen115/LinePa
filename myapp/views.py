@@ -44,6 +44,7 @@ def callback(request):
                     elif c > 12:
                         logger.error("Hello")
                         reply = limit_bubble(c,msg) 
+                        logger.error("Hello")
                     else:
                         reply = StickerSendMessage(package_id=11538,sticker_id=51626497);
                 except Exception as e:
