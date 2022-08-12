@@ -37,9 +37,12 @@ def callback(request):
             if isinstance(event, MessageEvent):
                 msg = event.message.text
                 try:
-                    records = Song.objects.filter(song_name__contains=msg)                    
-                    if 0 < records.count():
+                    records = Song.objects.filter(song_name__contains=msg)  
+                    c = records.count()
+                    if 0 < c <= 12:
                         reply = flex_message(records,msg)
+                    elif c > 12:
+                        reply = limit_bubble(records,msg) 
                     else:
                         reply = StickerSendMessage(package_id=11538,sticker_id=51626497);
                 except Exception as e:
@@ -47,9 +50,7 @@ def callback(request):
                 try:
                     line_bot_api.reply_message(event.reply_token, reply)
                 except Exception as e:
-                    logger.error (records.count())
-                    logger.error ("line after records count")
-                    
+                    logger.error ("長度"+records.count())
 
         return HttpResponse()
     else:
@@ -67,6 +68,63 @@ def flex_message(records,msg):
     }
     return FlexSendMessage(contents=carousel, alt_text=msg)
 
+def limit_bubble(records,msg):
+    content_json={
+    "type": "bubble",
+    "header": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+        {
+            "type": "text",
+            "text": "請再輸入更詳細歌名",
+            "margin": "lg",
+            "size": "lg",
+            "weight": "bold"
+        }
+        ]
+    },
+    "body": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+        {
+            "type": "text",
+            "text": "hello, world",
+            "contents": [
+            {
+                "type": "span",
+                "text": "您的"
+            },
+            {
+                "type": "span",
+                "text": msg,
+                "color": "#FF0000",
+                "size": "3xl"
+            },
+            {
+                "type": "span",
+                "text": "有包含"
+            },
+            {
+                "type": "span",
+                "text": records.count(),
+                "color": "#FF0000",
+                "size": "3xl"
+            },
+            {
+                "type": "span",
+                "text": "個結果"
+            }
+            ],
+            "margin": "xxl",
+            "size": "lg",
+            "weight": "bold"
+        }
+        ]
+    }
+    }
+    return FlexSendMessage(contents=content_json,alt_text=msg)
 
 def make_bubble(rec):
     return {"type": "bubble",
