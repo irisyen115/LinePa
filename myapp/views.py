@@ -83,7 +83,7 @@ def limit_bubble(c,msg):
             "type": "text",
             "text": "請再輸入更詳細的關鍵字",
             "margin": "lg",
-            "size": "xxl",
+            "size": "lg",
             "weight": "bold"
         }
         ]
