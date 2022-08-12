@@ -43,14 +43,16 @@ def callback(request):
                         reply = flex_message(records,msg)
                     elif c > 12:
                         logger.error("Hello")
-                        reply = limit_bubble(c,msg) 
+                        reply = limit_bubble(c,msg)
                         logger.error("Hello")
                     else:
                         reply = StickerSendMessage(package_id=11538,sticker_id=51626497);
                 except Exception as e:
                     logger.error(e + "cd")
                 try:
+                    logger.error("before")
                     line_bot_api.reply_message(event.reply_token, reply)
+                    logger.error("after")
                 except Exception as e:
                     logger.error ("長度"+records.count())
 
@@ -110,7 +112,7 @@ def limit_bubble(c,msg):
             },
             {
                 "type": "span",
-                "text": c,
+                "text": str(c),
                 "color": "#FF0000",
                 "size": "3xl"
             },
