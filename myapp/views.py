@@ -42,7 +42,8 @@ def callback(request):
                     if 0 < c <= 12:
                         reply = flex_message(records,msg)
                     elif c > 12:
-                        reply = limit_bubble(records,c,msg) 
+                        logger.error("Hello")
+                        reply = limit_bubble(c,msg) 
                     else:
                         reply = StickerSendMessage(package_id=11538,sticker_id=51626497);
                 except Exception as e:
@@ -68,7 +69,7 @@ def flex_message(records,msg):
     }
     return FlexSendMessage(contents=carousel, alt_text=msg)
 
-def limit_bubble(records,c,msg):
+def limit_bubble(c,msg):
     content_json={
     "type": "bubble",
     "header": {
