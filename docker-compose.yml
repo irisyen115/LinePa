@@ -1,0 +1,14 @@
+version: "2" 
+services:
+  assistant:
+    build:
+      context: ./
+      dockerfile: ./build/Dockerfile
+    ports:
+      - 8000:8000
+    image: irisservice-assitant
+    command: 'python manage.py runserver 0.0.0.0:8000'
+    container_name: irisass
+    working_dir: /code
+    volumes:
+      - .:/code
