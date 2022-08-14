@@ -134,6 +134,7 @@ def make_bubble(rec):
     return {"type": "bubble",
         "header": {
             "type": "box",
+            "size": "kilo",
             "layout": "vertical",
             "contents": [
             {
