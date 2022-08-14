@@ -152,7 +152,7 @@ def make_bubble(rec):
             {
                 "type": "text",
                 "weight": "bold",
-                "size": "5xl",
+                "size": "3xl",
                 "text": rec.song_num
             }
             ]
