@@ -132,7 +132,7 @@ def limit_bubble(c,msg):
 
 def make_bubble(rec):
     return {"type": "bubble",
-        "size": "micro",
+        "size": "kilo",
         "header": {
             "type": "box",
             "layout": "vertical",
@@ -156,7 +156,8 @@ def make_bubble(rec):
                 "size": "3xl",
                 "text": rec.song_num
             }
-            ]
+            ],
+            "alignItems": "center"
         }
     }    
     
