@@ -37,7 +37,7 @@ def callback(request):
             if isinstance(event, MessageEvent):
                 msg = event.message.text
                 try:
-                    records = Song.objects.filter(song_name__contains=msg).order_by('-id')  
+                    records = Song.objects.filter(song_name__contains=msg)  
                     c = records.count()
                     if 0 < c <= 12:
                         reply = flex_message(records,msg)
@@ -181,7 +181,7 @@ def create(request):
         return HttpResponse(status=200)        
 @csrf_exempt
 def song_list(request):
-    song_list = Song.objects.all().order_by('-id')
+    song_list = Song.objects.all()
     return render(request, 'songlist.html', {
         'song_list': song_list,
         'song.song_name':(x.song_name for x in song_list),
