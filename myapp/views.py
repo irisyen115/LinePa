@@ -132,6 +132,7 @@ def limit_bubble(c,msg):
 
 def make_bubble(rec):
     return {"type": "bubble",
+        "size": "micro",
         "header": {
             "type": "box",
             "layout": "vertical",
