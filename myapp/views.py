@@ -10,6 +10,7 @@ from linebot import LineBotApi, WebhookParser
 from linebot.exceptions import InvalidSignatureError, LineBotApiError
 from linebot.models import MessageEvent, TextSendMessage, StickerSendMessage, FlexSendMessage
 from myapp.models import Song
+from myapp.history_models import History
 from django.http import JsonResponse
 import logging
 import json
@@ -179,6 +180,7 @@ def create(request):
     else:
         Song.objects.create(song_name = songname,song_num = songnum)
         return HttpResponse(status=200)        
+
 @csrf_exempt
 def song_list(request):
     song_list = Song.objects.all()
@@ -187,6 +189,7 @@ def song_list(request):
         'song.song_name':(x.song_name for x in song_list),
         'song.song_num':(y.song_num for y in song_list)
     })
+
 @csrf_exempt
 def delete(request):
     data = json.loads(request.body.decode('utf-8'))
@@ -194,3 +197,12 @@ def delete(request):
     data_2 = Song.objects.filter(id = songid)
     data_2.delete()
     return HttpResponse()
+
+
+@csrf_exempt
+def history_list(request):
+    history_list = History.objects.all()
+    return render(request, 'history.html',{
+        'history_list': history_list,
+        'history.keyword':(x.keyword for x in history_list)
+    })

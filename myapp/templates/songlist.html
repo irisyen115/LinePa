@@ -19,6 +19,7 @@
             #songid {
                 cursor: pointer;
                 background-color: red;
+                display: none;
             }                         
         </style>
         <script>            
@@ -50,7 +51,7 @@
             <tr>
                 <th>歌名</th>
                 <th>歌號</th>
-                <th>刪除</th>
+                <th style="display: none">刪除</th>
             </tr>
         {% for song in song_list %}
             <tr id="tr{{ song.id }}">

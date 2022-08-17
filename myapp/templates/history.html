@@ -1,0 +1,19 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <table>
+            <tr>
+                <th>關鍵字</th>
+                <th></th>
+            </tr>
+        {% for history in history_list %}
+            <tr id="tr{{ history.id }}">
+                <td>{{ history.keyword }}</td>
+                <td id="songid" onclick="show(this)">{{ history.id }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    </body>
+</html>
