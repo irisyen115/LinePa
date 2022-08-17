@@ -37,17 +37,20 @@ def callback(request):
         for event in events:
             if isinstance(event, MessageEvent):
                 msg = event.message.text
-                try:
-                    records = Song.objects.filter(song_name__contains=msg)                    
-                    c = records.count()
+                try:                    
+                    records = Song.objects.filter(song_name__contains=msg)  
+                    c = records.count()                    
+                    history_records = History.objects.all()
+                    if msg == "＃歷史紀錄":
+                        reply = history_flex_message(history_records,msg)
                     if 0 < c <= 12:
-                        history_update_or_create(msg)  
                         reply = flex_message(records,msg)
-                    elif c > 12:
                         history_update_or_create(msg)
+                    elif c > 12:                        
                         reply = limit_bubble(c,msg)
+                        history_update_or_create(msg)
                     else:
-                        reply = StickerSendMessage(package_id=11538,sticker_id=51626497)
+                        reply = StickerSendMessage(package_id=11538,sticker_id=51626497);
                 except Exception as e:
                     logger.error(e + "cd")
                 try:
@@ -200,3 +203,56 @@ def delete(request):
 
 def history_update_or_create(msg):
     obj, created = History.objects.update_or_create(keyword=msg)
+
+@csrf_exempt
+def history_list(request):
+    history_list = History.objects.all()
+    return render(request, 'history.html',{
+        'history_list': history_list,
+        'history.keyword':(x.keyword for x in history_list)
+    })
+
+def history_flex_message(history_records,msg):
+    bubbles = []
+    for history_rec in history_records:
+        bubble = history_make_bubble(history_rec)
+        bubbles.append(bubble)
+        if bubbles.count() > 3:
+            break
+
+    carousel = {
+        "type": "carousel",
+        "contents": bubbles
+    }
+    return FlexSendMessage(contents=carousel, alt_text=msg)    
+
+def history_make_bubble(history_rec):
+    return {
+    {
+    "type": "bubble",
+    "header": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "text",
+        "text": "keyword",
+        "size": "lg",
+        "weight": "bold"
+      }
+    ]
+    },
+    "body": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+        {
+            "type": "text",
+            "text": history_rec,
+            "size": "3xl",
+            "weight": "bold"
+        }
+        ]
+    }
+    }
+    }  

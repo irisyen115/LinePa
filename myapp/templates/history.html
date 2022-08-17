@@ -6,12 +6,10 @@
         <table>
             <tr>
                 <th>關鍵字</th>
-                <th></th>
             </tr>
         {% for history in history_list %}
-            <tr id="tr{{ history.id }}">
+            <tr>
                 <td>{{ history.keyword }}</td>
-                <td id="songid" onclick="show(this)">{{ history.id }}</td>
             </tr>
         {% endfor %}
         </table>
