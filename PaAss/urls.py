@@ -23,6 +23,5 @@ urlpatterns = [
     path('song_page', views.song_page),
     path('create',views.create),
     path('song_list',views.song_list),
-    path('delete', views.delete),
-    path('history_list',views.history_list)
+    path('delete', views.delete)
 ]

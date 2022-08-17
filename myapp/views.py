@@ -38,16 +38,16 @@ def callback(request):
             if isinstance(event, MessageEvent):
                 msg = event.message.text
                 try:
-                    records = Song.objects.filter(song_name__contains=msg)  
+                    records = Song.objects.filter(song_name__contains=msg)                    
                     c = records.count()
                     if 0 < c <= 12:
+                        history_update_or_create(msg)  
                         reply = flex_message(records,msg)
                     elif c > 12:
-                        logger.error("Hello")
+                        history_update_or_create(msg)
                         reply = limit_bubble(c,msg)
-                        logger.error("Hello")
                     else:
-                        reply = StickerSendMessage(package_id=11538,sticker_id=51626497);
+                        reply = StickerSendMessage(package_id=11538,sticker_id=51626497)
                 except Exception as e:
                     logger.error(e + "cd")
                 try:
@@ -198,20 +198,5 @@ def delete(request):
     data_2.delete()
     return HttpResponse()
 
-def history_create(msg):
-    records = History.objects.filter(keyword=msg)
-    if records.count() > 0:
-        return HttpResponse(status=500)        
-    elif songnum.isdigit() == False:
-        return HttpResponse(status=500)
-    else:
-        History.objects.create(keyword=msg)
-        return HttpResponse(status=200)  
-
-@csrf_exempt
-def history_list(request):
-    history_list = History.objects.all()
-    return render(request, 'history.html',{
-        'history_list': history_list,
-        'history.keyword':(x.keyword for x in history_list)
-    })
+def history_update_or_create(msg):
+    obj, created = History.objects.update_or_create(keyword=msg)

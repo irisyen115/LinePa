@@ -7,5 +7,5 @@ class History(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     class Meta:
         unique_together = ("keyword",)
-        ordering = ['-id']
+        ordering = ['-updated_at']
 
