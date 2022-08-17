@@ -198,6 +198,9 @@ def delete(request):
     data_2.delete()
     return HttpResponse()
 
+@csrf_exempt
+def history_create(request,msg):
+    History.objects.create(keyword=msg)
 
 @csrf_exempt
 def history_list(request):
