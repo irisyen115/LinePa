@@ -24,6 +24,5 @@ urlpatterns = [
     path('create',views.create),
     path('song_list',views.song_list),
     path('delete', views.delete),
-    path('history_create', views.history_create),
     path('history_list',views.history_list)
 ]

@@ -198,9 +198,15 @@ def delete(request):
     data_2.delete()
     return HttpResponse()
 
-@csrf_exempt
-def history_create(request,msg):
-    History.objects.create(keyword=msg)
+def history_create(msg):
+    records = History.objects.filter(keyword=msg)
+    if records.count() > 0:
+        return HttpResponse(status=500)        
+    elif songnum.isdigit() == False:
+        return HttpResponse(status=500)
+    else:
+        History.objects.create(keyword=msg)
+        return HttpResponse(status=200)  
 
 @csrf_exempt
 def history_list(request):
