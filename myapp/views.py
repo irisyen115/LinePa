@@ -41,7 +41,7 @@ def callback(request):
                     records = Song.objects.filter(song_name__contains=msg)  
                     c = records.count()                    
                     history_records = History.objects.all()
-                    if msg == "＃歷史紀錄":
+                    if "＃歷史紀錄" in msg:
                         reply = history_flex_message(history_records,msg)
                     if 0 < c <= 12:
                         reply = flex_message(records,msg)
