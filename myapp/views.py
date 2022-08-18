@@ -214,6 +214,11 @@ def history_list(request):
     })
   
 def history_bubble(history_records,msg):
+    texts = []
+    for rec in history_records:
+        text = make_text(rec)
+        texts.append(text)
+
     content_json={
     "type": "bubble",
     "header": {
@@ -230,68 +235,15 @@ def history_bubble(history_records,msg):
     "body": {
         "type": "box",
         "layout": "vertical",
-        "contents": [
-        {
-            "type": "text",
-            "text": history_records[0],
-            "size": "xl",
-            "weight": "bold"
-        },
-        {
-            "type": "text",
-            "text": history_records[1],
-            "size": "xl",
-            "weight": "bold"
-        },
-        {
-            "type": "text",
-            "text": history_records[2],
-            "size": "xl",
-            "weight": "bold"
-        },
-        {
-            "type": "text",
-            "text": history_records[3],
-            "size": "xl",
-            "weight": "bold"
-        },
-        {
-            "type": "text",
-            "text": history_records[4],
-            "size": "xl",
-            "weight": "bold"
-        },
-        {
-            "type": "text",
-            "text": history_records[5],
-            "size": "xl",
-            "weight": "bold"
-        },
-        {
-            "type": "text",
-            "text": history_records[6],
-            "size": "xl",
-            "weight": "bold"
-        },
-        {
-            "type": "text",
-            "text": history_records[7],
-            "size": "xl",
-            "weight": "bold"
-        },
-        {
-            "type": "text",
-            "text": history_records[8],
-            "size": "xl",
-            "weight": "bold"
-        },
-        {
-            "type": "text",
-            "text": history_records[9],
-            "size": "xl",
-            "weight": "bold"
-        }
-        ]
+        "contents": texts
     }
     }
     return FlexSendMessage(contents=content_json,alt_text=msg)
+
+def make_text(rec):
+    return{
+        "type": "text",
+        "text": rec,
+        "size": "xl",
+        "weight": "bold"
+      }
