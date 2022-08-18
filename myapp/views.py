@@ -26,54 +26,54 @@ def callback(request):
     if request.method != 'POST':
         return HttpResponseBadRequest("Avengers assemble")
 
-	signature = request.META['HTTP_X_LINE_SIGNATURE']
-	body = request.body.decode('utf-8')
-	try:
-		events = parser.parse(body, signature)
-	except InvalidSignatureError:
-		return HttpResponseForbidden()
-	except LineBotApiError:
-		return HttpResponseBadRequest()
+    signature = request.META['HTTP_X_LINE_SIGNATURE']
+    body = request.body.decode('utf-8')
+    try:
+        events = parser.parse(body, signature)
+    except InvalidSignatureError:
+        return HttpResponseForbidden()
+    except LineBotApiError:
+        return HttpResponseBadRequest()
 
-	for event in events:
-		if isinstance(event, MessageEvent):
-			msg = event.message.text
-			reply = None
+    for event in events:
+        if isinstance(event, MessageEvent):
+            msg = event.message.text
+            reply = None
 
-			if "#歷史紀錄" in msg:
-				reply = handle_history(msg)
-			else:
-				reply = handle_filter(msg)
+            if "#歷史紀錄" in msg:
+                reply = handle_history(msg)
+            else:
+                reply = handle_filter(msg)
 
-			try:
-				line_bot_api.reply_message(event.reply_token, reply)
-			except Exception as e:
-				logger.error("reply message error, ", e)
+            try:
+                line_bot_api.reply_message(event.reply_token, reply)
+            except Exception as e:
+                logger.error("reply message error, ", e)
 
-	return HttpResponse()
+    return HttpResponse()
 
 def handle_history(msg):
-	history_records = History.objects.all()
-	return history_bubble(history_records, msg)
+    history_records = History.objects.all()
+    return history_bubble(history_records, msg)
 
 def handle_filter(msg):
     reply = None
 
-	try:
-		records = Song.objects.filter(song_name__contains=msg)
-		c = records.count()
-		if 0 < c <= 12:
-			reply = flex_message(records,msg)
-			history_update_or_create(msg)
-		elif c > 12:
-			reply = limit_bubble(c,msg)
-			history_update_or_create(msg)
-		else:
-			reply = StickerSendMessage(package_id=11538,sticker_id=51626497);
-	except Exception as e:
-		logger.error(e + "cd")
+    try:
+        records = Song.objects.filter(song_name__contains=msg)
+        c = records.count()
+        if 0 < c <= 12:
+            reply = flex_message(records,msg)
+            history_update_or_create(msg)
+        elif c > 12:
+            reply = limit_bubble(c,msg)
+            history_update_or_create(msg)
+        else:
+            reply = StickerSendMessage(package_id=11538,sticker_id=51626497);
+    except Exception as e:
+        logger.error(e + "cd")
 
-	return reply
+    return reply
 
 def make_bubble(rec):
     return {"type": "bubble",
