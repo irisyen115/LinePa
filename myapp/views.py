@@ -39,7 +39,6 @@ def callback(request):
                 msg = event.message.text    
                 history_records = History.objects.all() 
                 if "#歷史紀錄" in msg:
-                    History.objects.all().delete()
                     line_bot_api.reply_message(event.reply_token, history_bubble(history_records,msg))
                 else:                                        
                     try:                    
