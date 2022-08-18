@@ -65,6 +65,37 @@ def callback(request):
     else:
         return HttpResponseBadRequest("Avengers assemble")
 
+def make_bubble(rec):
+    return {"type": "bubble",
+        "header": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+            {
+                "type": "text",
+                "text": rec.song_name,
+                "margin": "lg",
+                "size": "lg",
+                "weight": "bold"
+            }
+            ]
+        },
+        "body": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+            {
+                "type": "text",
+                "weight": "bold",
+                "size": "3xl",
+                "text": rec.song_num
+            }
+            ],
+            "alignItems": "center"
+        }
+    }    
+
+
 def flex_message(records,msg):
     bubbles = []
     for rec in records:
@@ -133,38 +164,7 @@ def limit_bubble(c,msg):
         ]
     }
     }
-    return FlexSendMessage(contents=content_json,alt_text=msg)
-
-def make_bubble(rec):
-    return {"type": "bubble",
-        "header": {
-            "type": "box",
-            "layout": "vertical",
-            "contents": [
-            {
-                "type": "text",
-                "text": rec.song_name,
-                "margin": "lg",
-                "size": "lg",
-                "weight": "bold"
-            }
-            ]
-        },
-        "body": {
-            "type": "box",
-            "layout": "vertical",
-            "contents": [
-            {
-                "type": "text",
-                "weight": "bold",
-                "size": "3xl",
-                "text": rec.song_num
-            }
-            ],
-            "alignItems": "center"
-        }
-    }    
-    
+    return FlexSendMessage(contents=content_json,alt_text=msg)    
 
 @csrf_exempt
 def song_page(request):
@@ -243,7 +243,7 @@ def history_bubble(history_records,msg):
 def make_text(rec):
     return{
         "type": "text",
-        "text": rec,
+        "text": rec.keyword,
         "size": "xl",
         "weight": "bold"
       }
