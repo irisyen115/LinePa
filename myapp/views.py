@@ -23,47 +23,57 @@ parser = WebhookParser(settings.LINE_CHANNEL_SECRET)
 
 @csrf_exempt
 def callback(request):
-    reply = "無法辨識"    
-    if request.method == 'POST':
-        signature = request.META['HTTP_X_LINE_SIGNATURE']
-        body = request.body.decode('utf-8')
-        try:
-            events = parser.parse(body, signature)
-        except InvalidSignatureError:
-            return HttpResponseForbidden()
-        except LineBotApiError:
-            return HttpResponseBadRequest()
-               
-        for event in events:
-            if isinstance(event, MessageEvent):
-                msg = event.message.text    
-                history_records = History.objects.all() 
-                if "#歷史紀錄" in msg:
-                    line_bot_api.reply_message(event.reply_token, history_bubble(history_records,msg))
-                else:                                        
-                    try:                    
-                        records = Song.objects.filter(song_name__contains=msg)  
-                        c = records.count()                                                               
-                        if 0 < c <= 12:
-                            reply = flex_message(records,msg)
-                            history_update_or_create(msg)
-                        elif c > 12:                        
-                            reply = limit_bubble(c,msg)
-                            history_update_or_create(msg)
-                        else:
-                            reply = StickerSendMessage(package_id=11538,sticker_id=51626497);
-                    except Exception as e:
-                        logger.error(e + "cd")
-                    try:
-                        logger.error("before")
-                        line_bot_api.reply_message(event.reply_token, reply)
-                        logger.error("after")
-                    except Exception as e:
-                        logger.error ("長度"+records.count())
-
-        return HttpResponse()
-    else:
+    if request.method != 'POST':
         return HttpResponseBadRequest("Avengers assemble")
+
+    signature = request.META['HTTP_X_LINE_SIGNATURE']
+    body = request.body.decode('utf-8')
+    try:
+        events = parser.parse(body, signature)
+    except InvalidSignatureError:
+        return HttpResponseForbidden()
+    except LineBotApiError:
+        return HttpResponseBadRequest()
+
+    for event in events:
+        if isinstance(event, MessageEvent):
+            msg = event.message.text
+            reply = None
+
+            if "#歷史紀錄" in msg:
+                reply = handle_history(msg)
+            else:
+                reply = handle_filter(msg)
+
+            try:
+                line_bot_api.reply_message(event.reply_token, reply)
+            except Exception as e:
+                logger.error("reply message error, ", e)
+
+    return HttpResponse()
+
+def handle_history(msg):
+    history_records = History.objects.all()
+    return history_bubble(history_records, msg)
+
+def handle_filter(msg):
+    reply = None
+
+    try:
+        records = Song.objects.filter(song_name__contains=msg)
+        c = records.count()
+        if 0 < c <= 12:
+            reply = flex_message(records,msg)
+            history_update_or_create(msg)
+        elif c > 12:
+            reply = limit_bubble(c,msg)
+            history_update_or_create(msg)
+        else:
+            reply = StickerSendMessage(package_id=11538,sticker_id=51626497);
+    except Exception as e:
+        logger.error(e + "cd")
+
+    return reply
 
 def make_bubble(rec):
     return {"type": "bubble",
@@ -93,7 +103,7 @@ def make_bubble(rec):
             ],
             "alignItems": "center"
         }
-    }    
+    }
 
 
 def flex_message(records,msg):
@@ -164,7 +174,7 @@ def limit_bubble(c,msg):
         ]
     }
     }
-    return FlexSendMessage(contents=content_json,alt_text=msg)    
+    return FlexSendMessage(contents=content_json,alt_text=msg)
 
 @csrf_exempt
 def song_page(request):
@@ -178,12 +188,12 @@ def create(request):
     songnum = data['songnum']
     records = Song.objects.filter(song_name=songname)
     if records.count() > 0:
-        return HttpResponse(status=500)        
+        return HttpResponse(status=500)
     elif songnum.isdigit() == False:
         return HttpResponse(status=500)
     else:
         Song.objects.create(song_name = songname,song_num = songnum)
-        return HttpResponse(status=200)        
+        return HttpResponse(status=200)
 
 @csrf_exempt
 def song_list(request):
@@ -212,7 +222,7 @@ def history_list(request):
         'history_list': history_list,
         'history.keyword':(x.keyword for x in history_list)
     })
-  
+
 def history_bubble(history_records,msg):
     texts = []
     for rec in history_records:
