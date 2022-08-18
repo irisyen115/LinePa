@@ -38,7 +38,7 @@ def callback(request):
             if isinstance(event, MessageEvent):
                 msg = event.message.text    
                 history_records = History.objects.all() 
-                if "＃歷史紀錄" in msg:
+                if "#歷史紀錄" in msg:
                     reply = history_bubble(history_records,msg)
                 else:                                        
                     try:                    
