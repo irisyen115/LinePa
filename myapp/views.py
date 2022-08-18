@@ -36,29 +36,30 @@ def callback(request):
                
         for event in events:
             if isinstance(event, MessageEvent):
-                msg = event.message.text
-                try:                    
-                    records = Song.objects.filter(song_name__contains=msg)  
-                    c = records.count()                    
-                    history_records = History.objects.all()
-                    if "＃歷史紀錄" in msg:
-                        reply = history_flex_message(history_records,msg)
-                    if 0 < c <= 12:
-                        reply = flex_message(records,msg)
-                        history_update_or_create(msg)
-                    elif c > 12:                        
-                        reply = limit_bubble(c,msg)
-                        history_update_or_create(msg)
-                    else:
-                        reply = StickerSendMessage(package_id=11538,sticker_id=51626497);
-                except Exception as e:
-                    logger.error(e + "cd")
-                try:
-                    logger.error("before")
-                    line_bot_api.reply_message(event.reply_token, reply)
-                    logger.error("after")
-                except Exception as e:
-                    logger.error ("長度"+records.count())
+                msg = event.message.text    
+                history_records = History.objects.all() 
+                if "＃歷史紀錄" in msg:
+                    reply = history_bubble(history_records,msg)
+                else:                                        
+                    try:                    
+                        records = Song.objects.filter(song_name__contains=msg)  
+                        c = records.count()                                                               
+                        if 0 < c <= 12:
+                            reply = flex_message(records,msg)
+                            history_update_or_create(msg)
+                        elif c > 12:                        
+                            reply = limit_bubble(c,msg)
+                            history_update_or_create(msg)
+                        else:
+                            reply = StickerSendMessage(package_id=11538,sticker_id=51626497);
+                    except Exception as e:
+                        logger.error(e + "cd")
+                    try:
+                        logger.error("before")
+                        line_bot_api.reply_message(event.reply_token, reply)
+                        logger.error("after")
+                    except Exception as e:
+                        logger.error ("長度"+records.count())
 
         return HttpResponse()
     else:
@@ -211,36 +212,20 @@ def history_list(request):
         'history_list': history_list,
         'history.keyword':(x.keyword for x in history_list)
     })
-
-def history_flex_message(history_records,msg):
-    bubbles = []
-    for history_rec in history_records:
-        bubble = history_make_bubble(history_rec)
-        bubbles.append(bubble)
-        if bubbles.count() > 3:
-            break
-
-    carousel = {
-        "type": "carousel",
-        "contents": bubbles
-    }
-    return FlexSendMessage(contents=carousel, alt_text=msg)    
-
-def history_make_bubble(history_rec):
-    return {
-    {
+  
+def history_bubble(history_records,msg):
+    content_json={
     "type": "bubble",
     "header": {
-    "type": "box",
-    "layout": "vertical",
-    "contents": [
-      {
-        "type": "text",
-        "text": "keyword",
-        "size": "lg",
-        "weight": "bold"
-      }
-    ]
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+        {
+            "type": "text",
+            "text": "keywords",
+            "size": "xxl"
+        }
+        ]
     },
     "body": {
         "type": "box",
@@ -248,11 +233,65 @@ def history_make_bubble(history_rec):
         "contents": [
         {
             "type": "text",
-            "text": history_rec,
-            "size": "3xl",
+            "text": history_records[0],
+            "size": "xl",
+            "weight": "bold"
+        },
+        {
+            "type": "text",
+            "text": history_records[1],
+            "size": "xl",
+            "weight": "bold"
+        },
+        {
+            "type": "text",
+            "text": history_records[2],
+            "size": "xl",
+            "weight": "bold"
+        },
+        {
+            "type": "text",
+            "text": history_records[3],
+            "size": "xl",
+            "weight": "bold"
+        },
+        {
+            "type": "text",
+            "text": history_records[4],
+            "size": "xl",
+            "weight": "bold"
+        },
+        {
+            "type": "text",
+            "text": history_records[5],
+            "size": "xl",
+            "weight": "bold"
+        },
+        {
+            "type": "text",
+            "text": history_records[6],
+            "size": "xl",
+            "weight": "bold"
+        },
+        {
+            "type": "text",
+            "text": history_records[7],
+            "size": "xl",
+            "weight": "bold"
+        },
+        {
+            "type": "text",
+            "text": history_records[8],
+            "size": "xl",
+            "weight": "bold"
+        },
+        {
+            "type": "text",
+            "text": history_records[9],
+            "size": "xl",
             "weight": "bold"
         }
         ]
     }
     }
-    }  
+    return FlexSendMessage(contents=content_json,alt_text=msg)
